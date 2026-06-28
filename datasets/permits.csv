@@ -1,0 +1,3 @@
+permit_id,type,zone,status
+P101,Hot Work,B,Active
+P102,Maintenance,A,Active
