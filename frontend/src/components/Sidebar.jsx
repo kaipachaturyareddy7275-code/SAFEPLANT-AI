@@ -17,6 +17,8 @@ function Sidebar() {
 
       <Link to="/reports">Reports</Link>
 
+      <Link to="/alerts">Alerts</Link>
+
     </div>
   );
 }

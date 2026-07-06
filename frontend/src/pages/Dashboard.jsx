@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import DashboardCard from "../components/DashboardCard";
 
+import SensorChart from "../components/SensorChart";
+
 import {
  FaUsers,
  FaClipboardList,
@@ -59,6 +61,10 @@ value={data.overall_risk}
 icon={<FaExclamationTriangle />}
 color="#DC2626"
 />
+
+<h2>Sensor Analytics</h2>
+
+<SensorChart />
 
 </div>
 

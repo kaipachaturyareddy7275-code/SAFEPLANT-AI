@@ -79,26 +79,24 @@ def detect_risk():
 
         if not sensor_data.empty:
 
-            gas = sensor_data.iloc[0]["gas"]
-            temp = sensor_data.iloc[0]["temp"]
-            pressure = sensor_data.iloc[0]["pressure"]
+            gas = int(sensor_data.iloc[0]["gas"])
+            temp = int(sensor_data.iloc[0]["temp"])
+            pressure = int(sensor_data.iloc[0]["pressure"])
 
             risk = "LOW"
             score = 20
 
-            # Rule 1
             if gas > 70 and permit["type"] == "Hot Work":
                 risk = "HIGH"
                 score = 85
 
-            # Rule 2
             if pressure > 90:
                 risk = "CRITICAL"
                 score = 95
 
             risks.append({
-                "zone": zone,
-                "permit": permit["type"],
+                "zone": str(zone),
+                "permit": str(permit["type"]),
                 "gas": gas,
                 "temperature": temp,
                 "pressure": pressure,
@@ -116,11 +114,18 @@ def generate_report():
     return {
         "incident_id": "INC001",
         "zone": "B",
-        "risk": "HIGH",
-        "gas_level": 85,
         "permit": "Hot Work",
+        "gas_level": 85,
+        "temperature": 40,
+        "pressure": 90,
+        "risk": "HIGH",
         "reason": "Elevated gas level detected during active hot work operation.",
-        "action": "Evacuate workers immediately and stop hot work activities.",
+        "actions": [
+            "Stop Hot Work",
+            "Evacuate Workers",
+            "Notify Safety Officer",
+            "Inspect Gas Leakage"
+        ],
         "status": "Open"
     }
 
@@ -139,8 +144,32 @@ def recommendation():
             "Recheck sensor readings"
         ]
     }
-    
-    allow_origins=[
-    "http://localhost:5173",
-    "http://localhost:5174",
-]
+
+
+@app.get("/alerts")
+def get_alerts():
+
+    return [
+        {
+            "id": 1,
+            "zone": "B",
+            "level": "HIGH",
+            "message": "Gas level exceeded safe limit.",
+            "time": "10:30 AM"
+        },
+        {
+            "id": 2,
+            "zone": "C",
+            "level": "MEDIUM",
+            "message": "Temperature approaching threshold.",
+            "time": "10:35 AM"
+        },
+        {
+            "id": 3,
+            "zone": "A",
+            "level": "LOW",
+            "message": "Pressure normal.",
+            "time": "10:40 AM"
+        }
+    ]
+

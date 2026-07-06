@@ -1,0 +1,43 @@
+.alerts-container{
+    padding:30px;
+    background:#f4f6fb;
+    min-height:100vh;
+}
+
+.alerts-container h1{
+    margin-bottom:30px;
+}
+
+.alerts-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.alert-card{
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+    transition:.3s;
+}
+
+.alert-card:hover{
+    transform:translateY(-5px);
+}
+
+.high{
+    border-left:8px solid red;
+}
+
+.medium{
+    border-left:8px solid orange;
+}
+
+.low{
+    border-left:8px solid green;
+}
+
+.alert-card h2{
+    margin-bottom:15px;
+}

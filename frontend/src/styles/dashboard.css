@@ -65,3 +65,34 @@ font-size:18px;
 text-align:center;
 
 }
+
+.page-content{
+    margin-left: 280px;   /* Same as sidebar width */
+    padding: 40px;
+    min-height: 100vh;
+}
+
+.page-title{
+    font-size: 38px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 25px;
+}
+
+.search-box{
+    width: 350px;
+    padding: 14px 18px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+    margin-bottom: 30px;
+}
+
+.cards-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    align-items: flex-start;
+}

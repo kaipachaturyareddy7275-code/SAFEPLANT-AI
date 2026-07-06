@@ -1,0 +1,76 @@
+.risk-container{
+    padding:30px;
+    background:#f5f7fb;
+    min-height:100vh;
+}
+
+.risk-container h1{
+    margin-bottom:30px;
+    color:#1e293b;
+}
+
+.risk-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.risk-card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+    transition:.3s;
+}
+
+.risk-card:hover{
+    transform:translateY(-6px);
+}
+
+.high{
+    border-left:8px solid #ef4444;
+}
+
+.low{
+    border-left:8px solid #22c55e;
+}
+
+.critical{
+    border-left:8px solid #991b1b;
+}
+
+.risk-card h2{
+    margin-bottom:15px;
+}
+
+.risk-card p{
+    margin:8px 0;
+}
+
+.risk-card h3{
+    margin-top:20px;
+    margin-bottom:15px;
+}
+
+.progress{
+    width:100%;
+    background:#ddd;
+    border-radius:15px;
+    overflow:hidden;
+    height:15px;
+    margin:15px 0;
+}
+
+.progress-bar{
+    height:100%;
+    background:#2563eb;
+}
+
+.risk-card ul{
+    margin-top:10px;
+    padding-left:18px;
+}
+
+.risk-card li{
+    margin-bottom:8px;
+}

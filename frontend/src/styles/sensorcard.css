@@ -1,0 +1,36 @@
+.sensor-card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 5px 18px rgba(0,0,0,.12);
+    width:250px;
+    transition:.3s;
+}
+
+.sensor-card:hover{
+    transform:translateY(-6px);
+}
+
+.sensor-card h2{
+    color:#0f172a;
+    margin-bottom:15px;
+}
+
+.sensor-card p{
+    margin:10px 0;
+    font-size:17px;
+}
+
+.safe{
+    background:#16a34a;
+    color:white;
+    padding:8px 16px;
+    border-radius:20px;
+}
+
+.danger{
+    background:#dc2626;
+    color:white;
+    padding:8px 16px;
+    border-radius:20px;
+}
