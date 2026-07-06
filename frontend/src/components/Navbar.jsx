@@ -1,15 +1,17 @@
+import "./../styles/navbar.css";
+
 function Navbar() {
   return (
-    <div
-      style={{
-        background: "#1E3A8A",
-        color: "white",
-        padding: "15px",
-        fontSize: "24px",
-        fontWeight: "bold",
-      }}
-    >
-      🛡️ SafePlant AI
+    <div className="navbar">
+
+      <h2>Industrial Safety Intelligence Platform</h2>
+
+      <div className="status">
+
+        🟢 Plant Status : ACTIVE
+
+      </div>
+
     </div>
   );
 }

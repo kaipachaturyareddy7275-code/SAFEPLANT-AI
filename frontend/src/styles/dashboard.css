@@ -1,0 +1,67 @@
+body{
+
+margin:0;
+
+background:#F1F5F9;
+
+font-family:Segoe UI;
+
+}
+
+.dashboard{
+
+margin-left:250px;
+
+margin-top:90px;
+
+padding:30px;
+
+}
+
+.top-cards{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:25px;
+
+}
+
+.bottom{
+
+margin-top:40px;
+
+display:grid;
+
+grid-template-columns:2fr 1fr;
+
+gap:25px;
+
+}
+
+.alerts,.status{
+
+background:white;
+
+padding:30px;
+
+border-radius:15px;
+
+box-shadow:0 8px 18px rgba(0,0,0,.15);
+
+}
+
+.alerts li{
+
+margin:18px 0;
+
+font-size:18px;
+
+}
+
+.status{
+
+text-align:center;
+
+}
