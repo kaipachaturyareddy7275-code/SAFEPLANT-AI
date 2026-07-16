@@ -1,115 +1,166 @@
 import { useEffect, useState } from "react";
 
 import DashboardCard from "../components/DashboardCard";
-
 import SensorChart from "../components/SensorChart";
+import LiveCamera from "../components/LiveCamera";
 
 import {
- FaUsers,
- FaClipboardList,
- FaBell,
- FaExclamationTriangle
+  FaUsers,
+  FaClipboardList,
+  FaBell,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 
 import "./../styles/dashboard.css";
 
-function Dashboard(){
+function Dashboard() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
 
-const [data,setData]=useState(null);
+  useEffect(() => {
+    const loadDashboard = () => {
+      fetch("http://127.0.0.1:5000/risk")
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Unable to connect to backend.");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setData(data);
+          setError("");
+        })
+        .catch((err) => {
+          console.error(err);
+          setError("❌ Backend is not running.");
+        });
+    };
 
-useEffect(()=>{
+    loadDashboard();
 
-fetch("http://127.0.0.1:8000/dashboard")
-.then(res=>res.json())
-.then(data=>setData(data));
+    const timer = setInterval(loadDashboard, 3000);
 
-},[]);
+    return () => clearInterval(timer);
+  }, []);
 
-if(!data)
-return <h2>Loading Dashboard...</h2>;
+  if (error) {
+    return (
+      <div className="dashboard">
+        <h2 style={{ color: "red" }}>{error}</h2>
+      </div>
+    );
+  }
 
-return(
+  if (!data) {
+    return (
+      <div className="dashboard">
+        <h2>Loading Dashboard...</h2>
+      </div>
+    );
+  }
 
-<div className="dashboard">
+  return (
+    <div className="dashboard">
 
-<div className="top-cards">
+      {/* Dashboard Cards */}
 
-<DashboardCard
-title="Active Workers"
-value={data.active_workers}
-icon={<FaUsers />}
-color="#2563EB"
-/>
+      <div className="top-cards">
 
-<DashboardCard
-title="Active Permits"
-value={data.active_permits}
-icon={<FaClipboardList />}
-color="#16A34A"
-/>
+        <DashboardCard
+          title="Active Workers"
+          value={data.active_workers}
+          icon={<FaUsers />}
+          color="#2563EB"
+        />
 
-<DashboardCard
-title="Alerts"
-value={data.active_alerts}
-icon={<FaBell />}
-color="#EA580C"
-/>
+        <DashboardCard
+          title="Active Permits"
+          value={data.active_permits}
+          icon={<FaClipboardList />}
+          color="#16A34A"
+        />
 
-<DashboardCard
-title="Overall Risk"
-value={data.overall_risk}
-icon={<FaExclamationTriangle />}
-color="#DC2626"
-/>
+        <DashboardCard
+          title="Active Alerts"
+          value={data.active_alerts}
+          icon={<FaBell />}
+          color="#EA580C"
+        />
 
-<h2>Sensor Analytics</h2>
+        <DashboardCard
+          title="Overall Risk"
+          value={data.overall_risk}
+          icon={<FaExclamationTriangle />}
+          color="#DC2626"
+        />
 
-<SensorChart />
+        <DashboardCard
+          title="Risk Score"
+          value={`${data.risk_score}%`}
+          icon={<FaExclamationTriangle />}
+          color="#B91C1C"
+        />
 
-</div>
+      </div>
 
-<div className="bottom">
+      {/* Live Camera */}
 
-<div className="alerts">
+      <div style={{ marginTop: "30px" }}>
+        <LiveCamera />
+      </div>
 
-<h2>Recent Alerts</h2>
+      {/* Sensor Analytics */}
 
-<ul>
+      <div style={{ marginTop: "30px" }}>
+        <h2>📊 Sensor Analytics</h2>
+        <SensorChart />
+      </div>
 
-<li>🚨 Gas Leak detected in Zone B</li>
+      {/* Bottom Section */}
 
-<li>⚠ High Temperature in Zone A</li>
+      <div className="bottom">
 
-<li>✔ Permit Approved in Zone C</li>
+        <div className="alerts">
 
-</ul>
+          <h2>🚨 Recent Alerts</h2>
 
-</div>
+          <ul>
+            <li>🚨 Gas Leak detected in Zone B</li>
+            <li>⚠ High Temperature in Zone A</li>
+            <li>✔ Permit Approved in Zone C</li>
+          </ul>
 
-<div className="status">
+        </div>
 
-<h2>Plant Status</h2>
+        <div className="status">
 
-<h1 style={{color:"green"}}>
+          <h2>Plant Status</h2>
 
-🟢 ACTIVE
+          <h1
+            style={{
+              color:
+                data.overall_risk === "HIGH"
+                  ? "red"
+                  : data.overall_risk === "MEDIUM"
+                  ? "orange"
+                  : "green",
+            }}
+          >
+            {data.overall_risk === "HIGH"
+              ? "🔴 HIGH RISK"
+              : data.overall_risk === "MEDIUM"
+              ? "🟠 MEDIUM RISK"
+              : "🟢 SAFE"}
+          </h1>
 
-</h1>
+          <p>AI Monitoring System Running Successfully.</p>
 
-<p>
+        </div>
 
-All systems are connected.
+      </div>
 
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-);
-
+    </div>
+  );
 }
 
 export default Dashboard;

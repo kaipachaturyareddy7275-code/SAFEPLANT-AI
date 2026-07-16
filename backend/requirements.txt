@@ -1,4 +1,5 @@
-fastapi
-uvicorn
-pandas
-python-multipart
+Flask
+Flask-Cors
+opencv-python
+ultralytics
+numpy

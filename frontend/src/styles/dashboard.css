@@ -96,3 +96,23 @@ text-align:center;
     gap: 25px;
     align-items: flex-start;
 }
+
+.camera-card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    margin-top:30px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+}
+
+.camera-card img{
+
+    border-radius:10px;
+
+}
