@@ -1,38 +1,69 @@
 import { useEffect, useState } from "react";
-import "../styles/Alerts.css";
 
 function Alerts() {
-  const [alerts, setAlerts] = useState([]);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/alerts")
-      .then((res) => res.json())
-      .then((data) => setAlerts(data))
-      .catch((err) => console.error(err));
-  }, []);
+    const [alerts, setAlerts] = useState([]);
 
-  return (
-    <div className="alerts-container">
-      <h1>🚨 Live Safety Alerts</h1>
+    useEffect(() => {
 
-      <div className="alerts-grid">
-        {alerts.map((alert) => (
-          <div
-            key={alert.id}
-            className={`alert-card ${alert.level.toLowerCase()}`}
-          >
-            <h2>{alert.level}</h2>
+        const loadAlerts = () => {
 
-            <p><strong>Zone:</strong> {alert.zone}</p>
+            fetch("http://127.0.0.1:5000/alerts")
+                .then(res => res.json())
+                .then(data => setAlerts(data));
 
-            <p>{alert.message}</p>
+        };
 
-            <p><strong>Time:</strong> {alert.time}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+        loadAlerts();
+
+        const timer = setInterval(loadAlerts, 2000);
+
+        return () => clearInterval(timer);
+
+    }, []);
+
+    return (
+
+        <div className="dashboard">
+
+            <h1>Smart Alerts</h1>
+
+            <table className="table">
+
+                <thead>
+
+                    <tr>
+                        <th>Time</th>
+                        <th>Severity</th>
+                        <th>Message</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {alerts.map((alert, index) => (
+
+                        <tr key={index}>
+
+                            <td>{alert.time}</td>
+
+                            <td>{alert.level}</td>
+
+                            <td>{alert.message}</td>
+
+                        </tr>
+
+                    ))}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    );
+
 }
 
 export default Alerts;

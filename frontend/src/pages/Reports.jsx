@@ -1,64 +1,152 @@
-import { useEffect, useState } from "react";
-import "../styles/Reports.css";
+import { useEffect, useMemo, useState } from "react";
 
 function Reports() {
-  const [report, setReport] = useState(null);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/report")
-  .then((res) => res.json())
-  .then((data) => setReport(data))
-  .catch((err) => console.error(err));
-  }, []);
+    const [reports, setReports] = useState([]);
+    const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("ALL");
 
-  if (!report) {
-    return <h2>Loading Report...</h2>;
-  }
+    useEffect(() => {
 
-  return (
-    <div className="report-container">
-      <div className="report-card">
+        const loadReports = () => {
 
-        <h1>AI Incident Report</h1>
+            fetch("http://127.0.0.1:5000/reports")
+                .then(res => res.json())
+                .then(data => setReports(data));
 
-        <p><strong>Incident ID:</strong> {report.incident_id}</p>
-        <p><strong>Zone:</strong> {report.zone}</p>
-        <p><strong>Permit:</strong> {report.permit}</p>
+        };
 
-        <p className="risk">
-          <strong>Risk:</strong> {report.risk}
-        </p>
+        loadReports();
 
-        <p><strong>Gas Level:</strong> {report.gas_level}%</p>
-        <p><strong>Temperature:</strong> {report.temperature} °C</p>
-        <p><strong>Pressure:</strong> {report.pressure} PSI</p>
+        const timer = setInterval(loadReports, 3000);
 
-        <h3>Reason</h3>
+        return () => clearInterval(timer);
 
-        <p>{report.reason}</p>
+    }, []);
 
-        <h3>Recommended Actions</h3>
+    const filteredReports = useMemo(() => {
+        return reports.filter(report => {
 
-        <ul>
-          {report.actions.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
+            const matchesSearch =
+                report.source.toLowerCase().includes(search.toLowerCase()) ||
+                report.status.toLowerCase().includes(search.toLowerCase());
 
-        <h3>Status</h3>
+            const matchesFilter =
+                filter === "ALL" || report.status === filter;
 
-        <span className="status">{report.status}</span>
+            return matchesSearch && matchesFilter;
+        });
+    }, [reports, search, filter]);
 
-        <div className="button-group">
-          <button>Download Report</button>
-          <button onClick={() => window.location.reload()}>
-            Refresh
-          </button>
+      return (
+
+    <div className="dashboard">
+
+        <h1>Incident Reports</h1>
+
+        {/* Analytics Cards */}
+
+        <div className="top-cards">
+
+            <div className="card">
+                <h2>{reports.length}</h2>
+                <p>Total Incidents</p>
+            </div>
+
+            <div className="card">
+                <h2>
+                    {reports.filter(r => r.status === "HIGH").length}
+                </h2>
+                <p>High Risk</p>
+            </div>
+
+            <div className="card">
+                <h2>
+                    {reports.filter(r => r.status === "MEDIUM").length}
+                </h2>
+                <p>Medium Risk</p>
+            </div>
+
+            <div className="card">
+                <h2>
+                    {reports.filter(r => r.status === "SAFE").length}
+                </h2>
+                <p>Safe Events</p>
+            </div>
+
         </div>
 
-      </div>
+        {/* Search & Filter */}
+
+        <div style={{
+            display:"flex",
+            gap:"15px",
+            marginBottom:"20px"
+        }}>
+
+            <input
+                type="text"
+                placeholder="Search..."
+                value={search}
+                onChange={(e)=>setSearch(e.target.value)}
+            />
+
+            <select
+                value={filter}
+                onChange={(e)=>setFilter(e.target.value)}
+            >
+                <option>ALL</option>
+                <option>HIGH</option>
+                <option>MEDIUM</option>
+                <option>SAFE</option>
+            </select>
+
+        </div>
+
+        <button
+        onClick={()=>{
+        window.open("http://127.0.0.1:5000/export-csv");
+        }}
+        >   
+        Download CSV
+        </button>
+
+        <table className="table">
+
+            <thead>
+
+                <tr>
+                    <th>Time</th>
+                    <th>Source</th>
+                    <th>Risk</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {filteredReports.map((report,index)=>(
+
+                    <tr key={index}>
+
+                        <td>{report.time}</td>
+                        <td>{report.source}</td>
+                        <td>{report.risk}</td>
+                        <td>{report.status}</td>
+
+                    </tr>
+
+                ))}
+
+            </tbody>
+
+        </table>
+
     </div>
-  );
+
+);
+
 }
 
 export default Reports;

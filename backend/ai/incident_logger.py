@@ -1,32 +1,30 @@
-import csv
+import json
 import os
 from datetime import datetime
 
-FILE = "incidents.csv"
+LOG_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "logs",
+    "incidents.json"
+)
 
-def log_incident(event, risk, status):
 
-    exists = os.path.isfile(FILE)
+def log_incident(source, risk, status):
 
-    with open(FILE, "a", newline="") as file:
+    incident = {
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "source": source,
+        "risk": risk,
+        "status": status
+    }
 
-        writer = csv.writer(file)
+    try:
+        with open(LOG_FILE, "r") as file:
+            data = json.load(file)
+    except:
+        data = []
 
-        if not exists:
-            writer.writerow([
-                "Date",
-                "Time",
-                "Event",
-                "Risk",
-                "Status"
-            ])
+    data.insert(0, incident)
 
-        now = datetime.now()
-
-        writer.writerow([
-            now.strftime("%d-%m-%Y"),
-            now.strftime("%H:%M:%S"),
-            event,
-            risk,
-            status
-        ])
+    with open(LOG_FILE, "w") as file:
+        json.dump(data, file, indent=4)

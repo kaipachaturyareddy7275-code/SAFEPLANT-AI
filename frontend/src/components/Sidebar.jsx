@@ -1,26 +1,57 @@
-import { Link } from "react-router-dom";
-import "./../styles/sidebar.css";
+import { NavLink } from "react-router-dom";
+
+import {
+    FaHome,
+    FaChartLine,
+    FaBell,
+    FaFileAlt,
+    FaMicrochip,
+    FaClipboardCheck
+} from "react-icons/fa";
 
 function Sidebar() {
-  return (
-    <div className="sidebar">
+    return (
+        <div className="sidebar">
 
-      <h2>SafePlant AI</h2>
+            <h2>SafePlant AI</h2>
 
-      <Link to="/">Dashboard</Link>
+            <NavLink to="/">
+                <FaHome />
+                <span>Dashboard</span>
+            </NavLink>
 
-      <Link to="/sensors">Sensors</Link>
+            <NavLink to="/analytics">
+                <FaChartLine />
+                <span>Analytics</span>
+            </NavLink>
 
-      <Link to="/permits">Permits</Link>
+            <NavLink to="/sensors">
+                <FaMicrochip />
+                <span>Sensors</span>
+            </NavLink>
 
-      <Link to="/risk">Risk Engine</Link>
+            <NavLink to="/permits">
+                <FaClipboardCheck />
+                <span>Permits</span>
+            </NavLink>
 
-      <Link to="/reports">Reports</Link>
+            <NavLink to="/risk">
+                <FaChartLine />
+                <span>Risk Engine</span>
+            </NavLink>
 
-      <Link to="/alerts">Alerts</Link>
+            <NavLink to="/reports">
+                <FaFileAlt />
+                <span>Reports</span>
+            </NavLink>
 
-    </div>
-  );
+            <NavLink to="/alerts">
+                <FaBell />
+                <span>Alerts</span>
+            </NavLink>
+
+        </div>
+    );
 }
 
 export default Sidebar;

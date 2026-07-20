@@ -1,30 +1,26 @@
 def calculate_risk(persons, helmets):
-    """
-    Calculates risk based on detected persons and helmets.
-    """
 
-    if persons == 0:
-        return {
-            "risk": 0,
-            "status": "SAFE"
-        }
+    risk = 0
 
-    if helmets >= persons:
-        return {
-            "risk": 10,
-            "status": "SAFE"
-        }
+    # Worker Presence
+    if persons > 0:
+        risk += 20
 
-    missing = persons - helmets
+    # PPE Violation
+    if helmets < persons:
+        risk += 50
 
-    risk = min(100, missing * 40)
+    # Multiple Workers
+    if persons >= 5:
+        risk += 20
 
-    if risk >= 80:
-        status = "CRITICAL"
-    elif risk >= 50:
+    # Determine Status
+    if risk >= 70:
         status = "HIGH"
-    elif risk >= 20:
+
+    elif risk >= 40:
         status = "MEDIUM"
+
     else:
         status = "SAFE"
 

@@ -7,12 +7,23 @@ from backend.routes.video import video
 from threading import Thread
 from backend.ai.detection import start_detection
 
+from backend.routes.sensors import sensors
+from backend.routes.alerts import alerts
+
+from backend.routes.reports import reports
+from backend.routes.analytics import analytics
+
+
 app = Flask(__name__)
 
 CORS(app)
 
 app.register_blueprint(dashboard)
 app.register_blueprint(video)
+app.register_blueprint(sensors)
+app.register_blueprint(alerts)
+app.register_blueprint(reports)
+app.register_blueprint(analytics)
 
 
 @app.route("/")

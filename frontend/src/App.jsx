@@ -8,6 +8,7 @@ import Permits from "./pages/Permits";
 import Risk from "./pages/Risk";
 import Reports from "./pages/Reports";
 import Alerts from "./pages/Alerts";
+import Analytics from "./pages/Analytics";
 
 import "./styles/App.css";
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/risk" element={<Risk />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/alerts" element={<Alerts />} />
+            <Route path="/analytics" element={<Analytics />} />
           </Routes>
 
         </div>

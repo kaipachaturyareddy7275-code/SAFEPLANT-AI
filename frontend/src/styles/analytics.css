@@ -1,0 +1,44 @@
+.analytics {
+    padding: 30px;
+    background: #f5f7fb;
+    min-height: 100vh;
+}
+
+.analytics h1 {
+    margin-bottom: 30px;
+    color: #1f2937;
+    font-size: 32px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 25px;
+}
+
+.chart-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.chart-card:hover {
+    transform: translateY(-5px);
+}
+
+.chart-card h2 {
+    margin-bottom: 15px;
+    color: #374151;
+}
+
+@media(max-width:900px){
+
+.analytics-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}

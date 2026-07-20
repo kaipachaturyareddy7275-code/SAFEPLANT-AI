@@ -1,60 +1,75 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-import { Line } from "react-chartjs-2";
 import { useEffect, useState } from "react";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer
+} from "recharts";
 
 function SensorChart() {
-  const [sensorData, setSensorData] = useState([]);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/sensors")
-      .then((res) => res.json())
-      .then((data) => setSensorData(data));
-  }, []);
+    const [data, setData] = useState([]);
 
-  const data = {
-    labels: sensorData.map((item) => item.zone),
+    useEffect(() => {
 
-    datasets: [
-      {
-        label: "Gas",
-        data: sensorData.map((item) => item.gas),
-      },
-      {
-        label: "Temperature",
-        data: sensorData.map((item) => item.temp),
-      },
-      {
-        label: "Pressure",
-        data: sensorData.map((item) => item.pressure),
-      },
-    ],
-  };
+        const updateChart = () => {
 
-  return (
-    <div style={{ background: "white", padding: 20, borderRadius: 12 }}>
-      <Line data={data} />
-    </div>
-  );
+            fetch("http://127.0.0.1:5000/sensors")
+                .then(res => res.json())
+                .then(sensor => {
+
+                    setData(prev => [
+
+                        ...prev.slice(-9),
+
+                        {
+                            time: new Date().toLocaleTimeString(),
+                            temperature: sensor.temperature
+                        }
+
+                    ]);
+
+                });
+
+        };
+
+        updateChart();
+
+        const timer = setInterval(updateChart, 2000);
+
+        return () => clearInterval(timer);
+
+    }, []);
+
+    return (
+
+        <ResponsiveContainer width="100%" height={300}>
+
+            <LineChart data={data}>
+
+                <CartesianGrid strokeDasharray="3 3" />
+
+                <XAxis dataKey="time" />
+
+                <YAxis />
+
+                <Tooltip />
+
+                <Line
+                    type="monotone"
+                    dataKey="temperature"
+                    stroke="#2563EB"
+                />
+
+            </LineChart>
+
+        </ResponsiveContainer>
+
+    );
+
 }
 
 export default SensorChart;
