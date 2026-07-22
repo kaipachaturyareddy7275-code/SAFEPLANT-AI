@@ -9,6 +9,8 @@ import {
     ResponsiveContainer
 } from "recharts";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function SensorChart() {
 
     const [data, setData] = useState([]);
@@ -17,7 +19,7 @@ function SensorChart() {
 
         const updateChart = () => {
 
-            fetch("http://127.0.0.1:5000/sensors")
+            fetch(`${API_URL}/sensors`)
                 .then(res => res.json())
                 .then(sensor => {
 
@@ -32,7 +34,8 @@ function SensorChart() {
 
                     ]);
 
-                });
+                })
+                .catch(err => console.error(err));
 
         };
 

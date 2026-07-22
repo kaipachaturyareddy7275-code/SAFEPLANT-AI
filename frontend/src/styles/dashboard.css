@@ -20,11 +20,13 @@ padding:30px;
 
 .top-cards{
 
-display:grid;
+    display:grid;
 
-grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 
-gap:25px;
+    gap:25px;
+
+    margin-bottom:30px;
 
 }
 
@@ -114,5 +116,62 @@ text-align:center;
 .camera-card img{
 
     border-radius:10px;
+
+}
+
+.dashboard{
+
+    padding:30px;
+
+    background:#F5F7FA;
+
+    min-height:100vh;
+
+}
+
+.bottom{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:25px;
+
+    margin-top:30px;
+
+}
+
+.alerts,
+.status{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
+}
+
+.alerts ul{
+
+    list-style:none;
+
+    padding:0;
+
+}
+
+.alerts li{
+
+    margin:15px 0;
+
+    font-size:16px;
+
+}
+
+.status{
+
+    text-align:center;
 
 }

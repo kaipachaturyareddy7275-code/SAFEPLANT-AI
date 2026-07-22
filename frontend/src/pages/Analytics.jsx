@@ -7,6 +7,8 @@ import RiskBarChart from "../components/RiskBarChart";
 
 import "../styles/analytics.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Analytics() {
 
     const [data, setData] = useState(null);
@@ -16,7 +18,7 @@ function Analytics() {
 
         const loadAnalytics = () => {
 
-            fetch("http://127.0.0.1:5000/analytics")
+            fetch(`${API_URL}/analytics`)
                 .then((res) => res.json())
                 .then((analytics) => {
 
@@ -26,7 +28,7 @@ function Analytics() {
                 })
                 .catch((err) => {
 
-                    console.error(err);
+                    console.error("Analytics Error:", err);
                     setLoading(false);
 
                 });
@@ -71,9 +73,7 @@ function Analytics() {
 
                     <h2>Risk Trend</h2>
 
-                    <RiskTrendChart
-                        data={data.risk}
-                    />
+                    <RiskTrendChart data={data.risk} />
 
                 </div>
 
@@ -81,9 +81,7 @@ function Analytics() {
 
                     <h2>Worker Count</h2>
 
-                    <WorkerChart
-                        data={data.workers}
-                    />
+                    <WorkerChart data={data.workers} />
 
                 </div>
 
@@ -91,9 +89,7 @@ function Analytics() {
 
                     <h2>Alert Distribution</h2>
 
-                    <AlertPieChart
-                        data={data.alerts}
-                    />
+                    <AlertPieChart data={data.alerts} />
 
                 </div>
 
@@ -101,9 +97,7 @@ function Analytics() {
 
                     <h2>Risk Distribution</h2>
 
-                    <RiskBarChart
-                        data={data.alerts}
-                    />
+                    <RiskBarChart data={data.alerts} />
 
                 </div>
 

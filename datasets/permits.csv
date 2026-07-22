@@ -1,3 +1,9 @@
-permit_id,type,zone,status
-P101,Hot Work,B,Active
-P102,Maintenance,A,Active
+id,worker,zone,type,issue_date,expiry_date,status
+PT-101,Rahul,Zone A,Hot Work,21-07-2026,22-07-2026,APPROVED
+PT-102,Anjali,Zone B,Electrical,21-07-2026,22-07-2026,PENDING
+PT-103,Vikram,Zone C,Confined Space,20-07-2026,21-07-2026,EXPIRED
+PT-104,Priya,Zone A,Maintenance,21-07-2026,23-07-2026,APPROVED
+PT-105,Kiran,Zone D,Welding,21-07-2026,22-07-2026,PENDING
+PT-106,Ramesh,Zone B,Hot Work,21-07-2026,22-07-2026,APPROVED
+PT-107,Suresh,Zone C,Electrical,20-07-2026,21-07-2026,EXPIRED
+PT-108,Keerthi,Zone A,Inspection,21-07-2026,24-07-2026,APPROVED

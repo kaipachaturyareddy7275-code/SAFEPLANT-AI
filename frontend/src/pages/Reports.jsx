@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Reports() {
 
     const [reports, setReports] = useState([]);
@@ -10,9 +12,10 @@ function Reports() {
 
         const loadReports = () => {
 
-            fetch("http://127.0.0.1:5000/reports")
+            fetch(`${API_URL}/reports`)
                 .then(res => res.json())
-                .then(data => setReports(data));
+                .then(data => setReports(data))
+                .catch(err => console.error("Error loading reports:", err));
 
         };
 
@@ -25,6 +28,7 @@ function Reports() {
     }, []);
 
     const filteredReports = useMemo(() => {
+
         return reports.filter(report => {
 
             const matchesSearch =
@@ -35,117 +39,148 @@ function Reports() {
                 filter === "ALL" || report.status === filter;
 
             return matchesSearch && matchesFilter;
+
         });
+
     }, [reports, search, filter]);
 
-      return (
+    return (
 
-    <div className="dashboard">
+        <div className="dashboard">
 
-        <h1>Incident Reports</h1>
+            <h1>Incident Reports</h1>
 
-        {/* Analytics Cards */}
+            {/* Summary Cards */}
 
-        <div className="top-cards">
+            <div className="top-cards">
 
-            <div className="card">
-                <h2>{reports.length}</h2>
-                <p>Total Incidents</p>
+                <div className="card">
+                    <h2>{reports.length}</h2>
+                    <p>Total Incidents</p>
+                </div>
+
+                <div className="card">
+                    <h2>{reports.filter(r => r.status === "HIGH").length}</h2>
+                    <p>High Risk</p>
+                </div>
+
+                <div className="card">
+                    <h2>{reports.filter(r => r.status === "MEDIUM").length}</h2>
+                    <p>Medium Risk</p>
+                </div>
+
+                <div className="card">
+                    <h2>{reports.filter(r => r.status === "SAFE").length}</h2>
+                    <p>Safe Events</p>
+                </div>
+
             </div>
 
-            <div className="card">
-                <h2>
-                    {reports.filter(r => r.status === "HIGH").length}
-                </h2>
-                <p>High Risk</p>
-            </div>
+            {/* Search & Filter */}
 
-            <div className="card">
-                <h2>
-                    {reports.filter(r => r.status === "MEDIUM").length}
-                </h2>
-                <p>Medium Risk</p>
-            </div>
-
-            <div className="card">
-                <h2>
-                    {reports.filter(r => r.status === "SAFE").length}
-                </h2>
-                <p>Safe Events</p>
-            </div>
-
-        </div>
-
-        {/* Search & Filter */}
-
-        <div style={{
-            display:"flex",
-            gap:"15px",
-            marginBottom:"20px"
-        }}>
-
-            <input
-                type="text"
-                placeholder="Search..."
-                value={search}
-                onChange={(e)=>setSearch(e.target.value)}
-            />
-
-            <select
-                value={filter}
-                onChange={(e)=>setFilter(e.target.value)}
+            <div
+                style={{
+                    display: "flex",
+                    gap: "15px",
+                    marginBottom: "20px"
+                }}
             >
-                <option>ALL</option>
-                <option>HIGH</option>
-                <option>MEDIUM</option>
-                <option>SAFE</option>
-            </select>
 
-        </div>
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
 
-        <button
-        onClick={()=>{
-        window.open("http://127.0.0.1:5000/export-csv");
-        }}
-        >   
-        Download CSV
-        </button>
+                <select
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                >
+                    <option value="ALL">ALL</option>
+                    <option value="HIGH">HIGH</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="SAFE">SAFE</option>
+                </select>
 
-        <table className="table">
+            </div>
 
-            <thead>
+            {/* Export Buttons */}
 
-                <tr>
-                    <th>Time</th>
-                    <th>Source</th>
-                    <th>Risk</th>
-                    <th>Status</th>
-                </tr>
+            <div
+                style={{
+                    display: "flex",
+                    gap: "10px",
+                    marginBottom: "20px"
+                }}
+            >
 
-            </thead>
+                <button
+                    onClick={() => window.open(`${API_URL}/export/pdf`, "_blank")}
+                >
+                    Export PDF
+                </button>
 
-            <tbody>
+                <button
+                    onClick={() => window.open(`${API_URL}/export/csv`, "_blank")}
+                >
+                    Export CSV
+                </button>
 
-                {filteredReports.map((report,index)=>(
+            </div>
 
-                    <tr key={index}>
+            {/* Reports Table */}
 
-                        <td>{report.time}</td>
-                        <td>{report.source}</td>
-                        <td>{report.risk}</td>
-                        <td>{report.status}</td>
+            <table className="table">
 
+                <thead>
+
+                    <tr>
+                        <th>Time</th>
+                        <th>Source</th>
+                        <th>Risk</th>
+                        <th>Status</th>
                     </tr>
 
-                ))}
+                </thead>
 
-            </tbody>
+                <tbody>
 
-        </table>
+                    {filteredReports.length === 0 ? (
 
-    </div>
+                        <tr>
+                            <td
+                                colSpan="4"
+                                style={{ textAlign: "center" }}
+                            >
+                                No reports available.
+                            </td>
+                        </tr>
 
-);
+                    ) : (
+
+                        filteredReports.map((report, index) => (
+
+                            <tr key={index}>
+
+                                <td>{report.time}</td>
+                                <td>{report.source}</td>
+                                <td>{report.risk}</td>
+                                <td>{report.status}</td>
+
+                            </tr>
+
+                        ))
+
+                    )}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    );
 
 }
 

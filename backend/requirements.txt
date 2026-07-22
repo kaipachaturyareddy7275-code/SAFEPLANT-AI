@@ -3,3 +3,5 @@ Flask-Cors
 opencv-python
 ultralytics
 numpy
+reportlab
+pip freeze > requirements.txt

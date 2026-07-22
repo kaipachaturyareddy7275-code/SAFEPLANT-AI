@@ -13,6 +13,11 @@ from backend.routes.alerts import alerts
 from backend.routes.reports import reports
 from backend.routes.analytics import analytics
 
+from backend.routes.notifications import notifications
+from backend.routes.export_report import export
+
+from backend.routes.permits import permits
+
 
 app = Flask(__name__)
 
@@ -24,6 +29,9 @@ app.register_blueprint(sensors)
 app.register_blueprint(alerts)
 app.register_blueprint(reports)
 app.register_blueprint(analytics)
+app.register_blueprint(notifications)
+app.register_blueprint(export)
+app.register_blueprint(permits)
 
 
 @app.route("/")
@@ -32,17 +40,19 @@ def home():
         "message": "SafePlant AI Backend Running"
     }
 
-
 if __name__ == "__main__":
 
+    # Start AI Detection Thread
     Thread(
         target=start_detection,
         daemon=True
     ).start()
 
+    print("✅ AI Detection Started")
+
     app.run(
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=5000,
-        debug=False,
+        debug=True,
         threaded=True
     )

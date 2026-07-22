@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Sensors() {
 
     const [sensor, setSensor] = useState(null);
@@ -8,9 +10,18 @@ function Sensors() {
 
         const loadData = () => {
 
-            fetch("http://127.0.0.1:5000/sensors")
-                .then(res => res.json())
-                .then(data => setSensor(data));
+            fetch(`${API_URL}/sensors`)
+                .then(res => {
+
+                    if (!res.ok) {
+                        throw new Error("Failed to load sensor data");
+                    }
+
+                    return res.json();
+
+                })
+                .then(data => setSensor(data))
+                .catch(err => console.error("Sensor API Error:", err));
 
         };
 
@@ -22,8 +33,17 @@ function Sensors() {
 
     }, []);
 
-    if (!sensor)
-        return <h2>Loading Sensors...</h2>;
+    if (!sensor) {
+
+        return (
+
+            <div className="dashboard">
+                <h2>Loading Sensors...</h2>
+            </div>
+
+        );
+
+    }
 
     return (
 

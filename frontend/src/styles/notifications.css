@@ -1,0 +1,86 @@
+.notification-panel{
+
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.1);
+
+}
+
+.notification-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+
+}
+
+.notification-header h2{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+}
+
+.count{
+
+    background:#2563eb;
+    color:white;
+    border-radius:50%;
+    width:28px;
+    height:28px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:14px;
+
+}
+
+.notification-header button{
+
+    padding:8px 16px;
+    border:none;
+    border-radius:8px;
+    background:#ef4444;
+    color:white;
+    cursor:pointer;
+
+}
+
+.notification{
+
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:12px;
+    border-left:6px solid;
+
+}
+
+.notification.high{
+
+    background:#fee2e2;
+    border-color:#dc2626;
+
+}
+
+.notification.medium{
+
+    background:#fef3c7;
+    border-color:#f59e0b;
+
+}
+
+.notification.low{
+
+    background:#dcfce7;
+    border-color:#22c55e;
+
+}
+
+.notification p{
+
+    margin-top:5px;
+
+}

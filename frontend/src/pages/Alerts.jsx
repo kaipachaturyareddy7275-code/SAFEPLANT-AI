@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Alerts() {
 
     const [alerts, setAlerts] = useState([]);
@@ -8,9 +10,10 @@ function Alerts() {
 
         const loadAlerts = () => {
 
-            fetch("http://127.0.0.1:5000/alerts")
+            fetch(`${API_URL}/alerts`)
                 .then(res => res.json())
-                .then(data => setAlerts(data));
+                .then(data => setAlerts(data))
+                .catch(err => console.error("Error loading alerts:", err));
 
         };
 
@@ -42,19 +45,21 @@ function Alerts() {
 
                 <tbody>
 
-                    {alerts.map((alert, index) => (
-
-                        <tr key={index}>
-
-                            <td>{alert.time}</td>
-
-                            <td>{alert.level}</td>
-
-                            <td>{alert.message}</td>
-
+                    {alerts.length === 0 ? (
+                        <tr>
+                            <td colSpan="3" style={{ textAlign: "center" }}>
+                                No alerts available
+                            </td>
                         </tr>
-
-                    ))}
+                    ) : (
+                        alerts.map((alert, index) => (
+                            <tr key={index}>
+                                <td>{alert.time}</td>
+                                <td>{alert.level}</td>
+                                <td>{alert.message}</td>
+                            </tr>
+                        ))
+                    )}
 
                 </tbody>
 
